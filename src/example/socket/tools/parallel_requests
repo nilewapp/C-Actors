@@ -5,7 +5,7 @@ REQUESTS="$2"
 URL="$3"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Launch 10 processes that send requests to the server
+# Launch processes that send requests to the server
 for i in $(seq 1 $PROCESSES); do
     echo "Lanch process $i"
     exec $DIR/requests.py "$REQUESTS" "$URL" &
