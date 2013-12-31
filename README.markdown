@@ -6,15 +6,15 @@ An object-orinted library implementing the actors model in C.
 
 1. cd into the project directory and run the `scons` build tool
 
-    $ scons
+        $ scons
 
 2. Run the example server
 
-    $ ./bin/main_socket 6666
+        $ ./bin/main_socket 6666
 
 3. Create requests for the server
 
-    $ ./tools/parallel_requests 11 1000 'http://localhost:6666'
+        $ ./tools/parallel_requests 11 1000 'http://localhost:6666'
 
 ### Copyright and license
 
