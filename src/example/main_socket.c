@@ -75,10 +75,13 @@ int main(int argc, char *argv[]) {
     actor_system = new(ActorSystem, 2, 256, 4);
 
     /* Add two TestActors to the ActorSystem */
-    int actor_id1 = actor_system->add_actor(actor_system, new(TestActor));
-    int actor_id2 = actor_system->add_actor(actor_system, new(TestActor));
+    struct Actor * actor1 = new(TestActor);
+    struct Actor * actor2 = new(TestActor);
+    actor_system->add_actor(actor_system, actor1);
+    actor_system->add_actor(actor_system, actor2);
 
-    int newsockfd, portno;
+    long newsockfd;
+    int portno;
     socklen_t clilen;
     struct sockaddr_in serv_addr, cli_addr;
 
@@ -129,19 +132,14 @@ int main(int argc, char *argv[]) {
         }
 
         /* Choose one of the actors to send the request to */
-        int actor_id = i % 2 ? actor_id1 : actor_id2;
+        struct Actor * actor = i % 2 ? actor1 : actor2;
 
-        /* Send a message to one of the Actors from the ActorSystem */
-        if (actor_system->send(actor_system, new(Message, -1, actor_id, newsockfd))) {
+        /* Send a message to one of the Actors */
+        actor->send(actor, (void *) newsockfd);
 
-            /* Monitor the maximum queue length */
-            int queue_size = actor_system->message_queue->size(actor_system->message_queue);
-            queue_max = queue_max >= queue_size ? queue_max : queue_size;
-
-        } else {
-            close(newsockfd);
-            error("ERROR Queue full");
-        }
+        /* Monitor the maximum queue length */
+        int queue_size = actor_system->message_queue->size(actor_system->message_queue);
+        queue_max = queue_max >= queue_size ? queue_max : queue_size;
     }
 
     printf("INFO Time to process %d messages: %ld s\n", num_messages, time(NULL) - start);

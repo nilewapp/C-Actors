@@ -15,14 +15,14 @@
  */
 #include "TestActor.h"
 
-static void TestActor_receive(struct Actor * self, int sender, void * data) {
+static void TestActor_receive(struct Actor * self, void * data) {
     char buffer[256];
     int socket = (long) data;
     int n;
 
 #ifdef DEBUG
-    printf("Actor %d received message '%d' from %d, handled by thread %d\n",
-            self->id, socket, sender, pthread_self());
+    printf("Actor %d received message '%d', handled by thread %d\n",
+            self->id, socket, pthread_self());
 #endif
 
     if (socket < 0) {
