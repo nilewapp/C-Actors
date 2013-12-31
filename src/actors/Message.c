@@ -15,26 +15,26 @@
  */
 #include "Message.h"
 
-static void * Message_constructor(void * _self, va_list * args) {
+static void * constructor(void * _self, va_list * args) {
     struct Message * self = _self;
     self->receiver = va_arg(* args, int);
     self->content = va_arg(* args, void *);
     return self;
 }
 
-static void * Message_destructor(void * self) {
+static void * destructor(void * self) {
     return self;
 }
 
-static bool Message_equals(void * self, void * other) {
+static bool equals(void * self, void * other) {
     return self == other;
 }
 
-static const struct Class _Message = {
+const struct Class _Message = {
     sizeof(struct Message),
-    Message_constructor,
-    Message_destructor,
-    Message_equals
+    constructor,
+    destructor,
+    equals
 };
 
 const void * Message = & _Message;

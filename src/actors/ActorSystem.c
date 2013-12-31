@@ -15,13 +15,13 @@
  */
 #include "ActorSystem.h"
 
-static void ActorSystem_start(struct ActorSystem * self) {
+static void start(struct ActorSystem * self) {
     for (int i = 0; i < self->worker_threads_size; i++) {
         self->worker_threads[i]->start(self->worker_threads[i]);
     }
 }
 
-static void ActorSystem_stop(struct ActorSystem * self) {
+static void stop(struct ActorSystem * self) {
     self->cancel = true;
 
     for (int i = 0; i < self->worker_threads_size; i++) {
@@ -33,7 +33,7 @@ static void ActorSystem_stop(struct ActorSystem * self) {
     }
 }
 
-static int ActorSystem_add_actor(struct ActorSystem * self, struct Actor * actor) {
+static int add_actor(struct ActorSystem * self, struct Actor * actor) {
     if (self->actors_size < self->actors_max) {
         actor->system = self;
         actor->id = self->actors_size;
@@ -45,14 +45,14 @@ static int ActorSystem_add_actor(struct ActorSystem * self, struct Actor * actor
     }
 }
 
-static bool ActorSystem_send(struct ActorSystem * self, struct Message * message) {
+static bool send(struct ActorSystem * self, struct Message * message) {
     struct SafeQueue * message_queue = self->message_queue;
     bool sent = message_queue->push(message_queue, message);
     pthread_cond_signal(& self->thread_cond);
     return sent;
 }
 
-static void ActorSystem_receive(struct ActorSystem * self) {
+static void receive(struct ActorSystem * self) {
     struct Message * message;
     struct Thread * current_thread = self->current_thread(self);
     while (!self->cancel) {
@@ -72,26 +72,26 @@ static void ActorSystem_receive(struct ActorSystem * self) {
     }
 }
 
-static struct Thread * ActorSystem_current_thread(struct ActorSystem * self) {
-    pthread_t current_thread = pthread_self();
+static struct Thread * current_thread(struct ActorSystem * self) {
+    pthread_t pthread = pthread_self();
     for (int i = 0; i < self->worker_threads_size; i++) {
         struct Thread * thread = self->worker_threads[i];
-        if (thread->thread == current_thread) {
+        if (thread->thread == pthread) {
             return thread;
         }
     }
     return NULL;
 }
 
-static void * ActorSystem_constructor(void * _self, va_list * args) {
+static void * constructor(void * _self, va_list * args) {
     struct ActorSystem * self = _self;
 
-    self->start = ActorSystem_start;
-    self->stop = ActorSystem_stop;
-    self->add_actor = ActorSystem_add_actor;
-    self->send = ActorSystem_send;
-    self->receive = ActorSystem_receive;
-    self->current_thread = ActorSystem_current_thread;
+    self->start = start;
+    self->stop = stop;
+    self->add_actor = add_actor;
+    self->send = send;
+    self->receive = receive;
+    self->current_thread = current_thread;
 
     self->actors_max = va_arg(* args, int);
     self->actors_size = 0;
@@ -113,7 +113,7 @@ static void * ActorSystem_constructor(void * _self, va_list * args) {
     return self;
 }
 
-static void * ActorSystem_destructor(void * _self) {
+static void * destructor(void * _self) {
     struct ActorSystem * self = _self;
 
     for (int i = 0; i < self->actors_size; i++) {
@@ -135,15 +135,15 @@ static void * ActorSystem_destructor(void * _self) {
     return self;
 }
 
-static bool ActorSystem_equals(void * self, void * other) {
+static bool equals(void * self, void * other) {
     return self == other;
 }
 
 static const struct Class _ActorSystem = {
     sizeof(struct ActorSystem),
-    ActorSystem_constructor,
-    ActorSystem_destructor,
-    ActorSystem_equals
+    constructor,
+    destructor,
+    equals
 };
 
 const void * ActorSystem = & _ActorSystem;

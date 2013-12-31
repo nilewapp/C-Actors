@@ -15,15 +15,15 @@
  */
 #include "Actor.h"
 
-static void Actor_send(struct Actor * self, void * message) {
+static void send(struct Actor * self, void * message) {
     struct ActorSystem * system = self->system;
     system->send(system, new(Message, self->id, message));
 }
 
-static void * Actor_constructor(void * _self, va_list * args) {
+static void * constructor(void * _self, va_list * args) {
     struct Actor * self = _self;
 
-    self->send = Actor_send;
+    self->send = send;
     self->receive = NULL;
 
     pthread_mutex_init(& self->mutex, NULL);
@@ -34,21 +34,21 @@ static void * Actor_constructor(void * _self, va_list * args) {
     return self;
 }
 
-static void * Actor_destructor(void * _self) {
+static void * destructor(void * _self) {
     struct Actor * self = _self;
     pthread_mutex_destroy(& self->mutex);
     return self;
 }
 
-static bool Actor_equals(void * self, void * other) {
+static bool equals(void * self, void * other) {
     return self == other;
 }
 
 static const struct Class _Actor = {
     sizeof(struct Actor),
-    Actor_constructor,
-    Actor_destructor,
-    Actor_equals
+    constructor,
+    destructor,
+    equals
 };
 
 const void * Actor = & _Actor;
