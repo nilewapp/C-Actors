@@ -28,8 +28,8 @@ struct ActorSystem;
 struct Actor {
     const void * class;
 
-    void (* send)(struct Actor * self, int receiver, void * data);
-    void (* receive)(struct Actor * self, int sender, void * data);
+    void (* send)(struct Actor * self, void * data);
+    void (* receive)(struct Actor * self, void * data);
 
     pthread_mutex_t mutex;
     struct ActorSystem * system;

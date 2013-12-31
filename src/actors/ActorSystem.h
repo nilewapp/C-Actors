@@ -27,6 +27,7 @@
 #include "Actor.h"
 
 struct Actor;
+struct Message;
 
 struct ActorSystem {
     const void * class;

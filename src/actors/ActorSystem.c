@@ -61,7 +61,7 @@ static void ActorSystem_receive(struct ActorSystem * self) {
         while (queue->pop(queue, (void **) & message)) {
             struct Actor * receiver = self->actors[message->receiver];
             pthread_mutex_lock(& receiver->mutex);
-            receiver->receive(receiver, message->sender, message->content);
+            receiver->receive(receiver, message->content);
             pthread_mutex_unlock(& receiver->mutex);
             delete(message);
         }

@@ -15,9 +15,9 @@
  */
 #include "Actor.h"
 
-static void Actor_send(struct Actor * self, int receiver, void * data) {
+static void Actor_send(struct Actor * self, void * message) {
     struct ActorSystem * system = self->system;
-    system->send(system, new(Message, self->id, receiver, data));
+    system->send(system, new(Message, self->id, message));
 }
 
 static void * Actor_constructor(void * _self, va_list * args) {
