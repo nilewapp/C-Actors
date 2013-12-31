@@ -113,7 +113,6 @@ static void * ActorSystem_constructor(void * _self, va_list * args) {
     return self;
 }
 
-
 static void * ActorSystem_destructor(void * _self) {
     struct ActorSystem * self = _self;
 
