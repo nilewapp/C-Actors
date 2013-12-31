@@ -1,6 +1,6 @@
 ## C-Actors
 
-An object-orinted library implementing the actors model in C.
+An object-oriented library implementing the actors model in C.
 
 ### Getting started
 
