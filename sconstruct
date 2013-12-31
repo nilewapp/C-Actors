@@ -1,0 +1,13 @@
+# Build script for actors
+env = Environment()
+env.VariantDir('#bin/', '#src/', duplicate = 0)
+env.Append(CCFLAGS = "-g --std=c99")
+env.Append(CPPPATH = ["#src/actors/"])
+
+env.Append(LIBS = ["actors", "pthread"])
+
+env.Append(LIBPATH = ["#bin"])
+
+env.Library("bin/actors", Glob("bin/actors/*.c"))
+
+env.Program("bin/main_socket", ["bin/example/main_socket.c", "bin/example/TestActor.c"], CCFLAGS = env["CCFLAGS"] + " -DDEBUG")
