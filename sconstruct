@@ -10,4 +10,6 @@ env.Append(LIBPATH = ["#bin"])
 
 env.Library("bin/actors", Glob("bin/actors/*.c"))
 
-env.Program("bin/main_socket", ["bin/example/main_socket.c", "bin/example/TestActor.c"], CCFLAGS = env["CCFLAGS"] + " -DDEBUG")
+env.Program("bin/socket_example", ["bin/example/socket/main_socket.c", "bin/example/socket/SocketActor.c"], CCFLAGS = env["CCFLAGS"] + " -DDEBUG")
+
+env.Program("bin/first_example", ["bin/example/first/main_first.c", "bin/example/first/FirstActor.c"], CCFLAGS = env["CCFLAGS"] + " -DDEBUG")

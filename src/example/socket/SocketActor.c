@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "TestActor.h"
+#include "SocketActor.h"
 
-static void TestActor_receive(struct Actor * self, void * data) {
+static void receive(struct Actor * self, void * data) {
     char buffer[256];
     int socket = (long) data;
     int n;
@@ -45,27 +45,27 @@ static void TestActor_receive(struct Actor * self, void * data) {
     close(socket);
 }
 
-static void * TestActor_constructor(void * _self, va_list * args) {
+static void * constructor(void * _self, va_list * args) {
     struct Actor * self = ((const struct Class *) Actor)->constructor(_self, args);
 
-    self->receive = TestActor_receive;
+    self->receive = receive;
 
     return self;
 }
 
-static void * TestActor_destructor(void * self) {
+static void * destructor(void * self) {
     return self;
 }
 
-static bool TestActor_equals(void * self, void * other) {
+static bool equals(void * self, void * other) {
     return self == other;
 }
 
-static const struct Class _TestActor = {
-    sizeof(struct TestActor),
-    TestActor_constructor,
-    TestActor_destructor,
-    TestActor_equals
+static const struct Class _SocketActor = {
+    sizeof(struct SocketActor),
+    constructor,
+    destructor,
+    equals
 };
 
-const void * TestActor = & _TestActor;
+const void * SocketActor = & _SocketActor;

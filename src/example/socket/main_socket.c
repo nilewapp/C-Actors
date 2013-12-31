@@ -25,7 +25,7 @@
 #include <pthread.h>
 
 #include "actors.h"
-#include "TestActor.h"
+#include "SocketActor.h"
 
 struct ActorSystem * actor_system;
 int sockfd;
@@ -75,8 +75,8 @@ int main(int argc, char *argv[]) {
     actor_system = new(ActorSystem, 2, 256, 4);
 
     /* Add two TestActors to the ActorSystem */
-    struct Actor * actor1 = new(TestActor);
-    struct Actor * actor2 = new(TestActor);
+    struct Actor * actor1 = new(SocketActor);
+    struct Actor * actor2 = new(SocketActor);
     actor_system->add_actor(actor_system, actor1);
     actor_system->add_actor(actor_system, actor2);
 

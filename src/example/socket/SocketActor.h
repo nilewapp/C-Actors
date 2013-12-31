@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _TEST_ACTOR_H_
-#define _TEST_ACTOR_H_
+#ifndef _SOCKET_ACTOR_H_
+#define _SOCKET_ACTOR_H_
 
 #include <unistd.h>
 #include <pthread.h>
 #include <string.h>
 #include "actors.h"
 
-struct TestActor {
+struct SocketActor {
     struct Actor super;
 };
 
-const void * TestActor;
+const void * SocketActor;
 
 #endif
