@@ -17,7 +17,6 @@
 
 static void * Message_constructor(void * _self, va_list * args) {
     struct Message * self = _self;
-    self->sender = va_arg(* args, int);
     self->receiver = va_arg(* args, int);
     self->content = va_arg(* args, void *);
     return self;

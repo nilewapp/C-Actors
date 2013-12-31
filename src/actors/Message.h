@@ -20,11 +20,13 @@
 #include <stdbool.h>
 
 #include "ooc.h"
+#include "Actor.h"
+
+struct Actor;
 
 struct Message {
     const void * class;
 
-    int sender;
     int receiver;
     void * content;
 };
