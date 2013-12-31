@@ -16,4 +16,4 @@ An object-orinted library implementing the actors model in C.
 
 Copyright 2013 Robert Welin
 
-NoYt is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+C-Actors is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
